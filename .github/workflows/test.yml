@@ -9,9 +9,12 @@ jobs:
     strategy:
       matrix:
         n: [1, 2, 3]
+    outputs:
+      output_n: ${{ steps.echo.outputs.n }}
     steps:
       - name: Echo n
-        run: echo ${{ matrix.n }}
+        id: echo
+        run: echo "n=${{ matrix.n }} >> $GITHUB_OUTPUT
 
   matrix_2:
     runs-on: ubuntu-latest
@@ -21,4 +24,4 @@ jobs:
         n: [4, 5, 6]
     steps:
       - name: Echo n
-        run: echo ${{ matrix.n }}
+        run: echo ${{ matrix.n }} - ${{ needs.matrix_1.outputs.output_n }}
